@@ -1,10 +1,15 @@
 from flask import *
 from twilio.rest import TwilioRestClient
 import twilio.twiml
+from twilio.util import RequestValidator
 
 account_sid = "AC603bdae185464326b59f75982befc9c5" # Your Account SID from www.twilio.com/console
 auth_token  = "65a6f6eb6b11237fbdb9c073b8ea4b99"  # Your Auth Token from www.twilio.com/console
 client = TwilioRestClient(account_sid, auth_token)
+validator = RequestValidator(auth_token)
+mysite = "http://phonebuzz-phase1-lelu.herokuapp.com/"
+# The X-Twilio-Signature header attached to the request
+twilio_signature = 'RSOYDt4T1cUTdK1PDd93/VVr8B8='
 
 app = Flask(__name__)
 
@@ -22,12 +27,25 @@ def phoneBuzz():
 
 @app.route('/handle_input', methods=['GET','POST'])    
 def handle_input():
-    nm = request.values.get('Digits', None)
-    print nm
+    nm = request.values.get('Digits', '')
+    # prepare the post request params for validation
+    post_params = {
+        'CallSid': request.values.get('CallSid', ''),
+        'Caller': request.values.get('Caller', ''),
+        'Digits': nm,
+        'From': request.values.get('From', ''),
+        'To': request.values.get('To', '')
+    }
     resp = twilio.twiml.Response()
+    # validate that the request is from Twilio
+    if not validator.validate(mysite+"handle_input", post_params, twilio_signature):
+        resp.say("You are not an authorized user. Sorry.")
+        return str(resp)
+
+    
     if nm.isdigit():  # if input is valid
         res = generatePhoneBuzz(int(nm))
-        resp.say(", ".join(res) + "</Say><Say>,,,,Game finished. Goodbye!</Say></Response>")
+        resp.say(", ".join(res) + ",,,,Game finished. Goodbye!")
     else: # if input is invalid, ask for re-entering the num
         resp.say("You did not enter a valid number.")
         resp.redirect("/phonebuzz")
