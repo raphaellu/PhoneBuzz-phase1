@@ -39,7 +39,8 @@ def handle_input():
     resp = twilio.twiml.Response()
     # validate that the request is from Twilio
     if not validator.validate(mysite+"handle_input", post_params, twilio_signature):
-        resp.say("You are not an authorized user. Sorry.")
+        print (post_params)
+        resp.say("You are not an authorized user. Sorry. CallSid is " + post_params['CallSid'] + " Caller is " + post_params['Caller'] + " From is " + post_params['From'] + " To is : " +post_params['To'])
         return str(resp)
 
     
