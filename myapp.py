@@ -12,7 +12,7 @@ app = Flask(__name__)
 def index():
     return render_template('index.html')
 
-@app.route('/phonebuzz')
+@app.route('/phonebuzz', methods=['GET','POST'])
 def phoneBuzz():
     resp = twilio.twiml.Response()
     # ask user to enter a num for game
@@ -20,16 +20,18 @@ def phoneBuzz():
         g.say("Please enter a number to start fizz buzz game, followed by the pound sign.")
     return str(resp)
 
-@app.route('/handle_input')    
+@app.route('/handle_input', methods=['GET','POST'])    
 def handle_input():
     nm = request.values.get('Digits', None)
+    print nm
     resp = twilio.twiml.Response()
     if nm.isdigit():  # if input is valid
         res = generatePhoneBuzz(int(nm))
-        res.say(", ".join(res) + "</Say><Say>,,,,Game finished. Goodbye!</Say></Response>")
+        resp.say(", ".join(res) + "</Say><Say>,,,,Game finished. Goodbye!</Say></Response>")
     else: # if input is invalid, ask for re-entering the num
-        res.say("You did not enter a valid number.")
-        return redirect("/phonebuzz")
+        resp.say("You did not enter a valid number.")
+        resp.redirect("/phonebuzz")
+    return str(resp)
 
     
 def generatePhoneBuzz(nm):
