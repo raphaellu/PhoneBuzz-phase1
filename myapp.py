@@ -48,7 +48,7 @@ def handle_input():
     if nm.isdigit():  # if input is valid
         res = generatePhoneBuzz(int(nm))
         if (res == -1): # if the number is too large, ask for re-entering the num
-            resp.say("You entered a very large number, why don't we try a smaller one?")
+            resp.say("You entered a very large number, why don't we try a smaller one ?")
             resp.redirect("/phonebuzz")
         else: 
             resp.say(", ".join(res) + ",,,,Game finished. Goodbye!")
