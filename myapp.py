@@ -11,8 +11,8 @@ app = Flask(__name__)
 @app.route('/')
 def index():
     resp = twilio.twiml.Response()
-    resp.gather(action="/phonebuzz", method="GET", timeout=10, finishOnKey="#")
-    resp.say("Please enter a number to start fizz buzz game, followed by the pound sign")
+    with resp.gather(action="/phonebuzz", method="GET", timeout=10) as g:
+        g.say("Please enter a number to start fizz buzz game, followed by the pound sign")
     # resp.say("We didn't receive any input. Goodbye!")
     return str(resp)
     # return render_template('index.html', result=str(resp))
@@ -22,11 +22,11 @@ def phoneBuzz():
     error = None
     if request.method == 'GET':
         nm = request.args.get('Digits')
-        res = generatePhoneBuzz(int(nm));
+        res = generatePhoneBuzz(int(nm))
         # message = client.messages.create(body=', '.join(res),
         #     to="+18582636040",    # Replace with your phone number
         #     from_="+12565308617") # Replace with your Twilio number
-        return res
+        return "<Response><Say>" + ", ".join(res) + "</Say></Response>"
     #     return render_template('index.html', result = res)
     # return render_template('index.html')
 
