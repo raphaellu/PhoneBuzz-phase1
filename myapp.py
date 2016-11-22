@@ -13,7 +13,7 @@ def index():
     resp = twilio.twiml.Response()
     with resp.gather(action="/phonebuzz", method="GET", timeout=10) as g:
         g.say("Please enter a number to start fizz buzz game, followed by the pound sign")
-    # resp.say("We didn't receive any input. Goodbye!")
+    resp.say("Game finished. Goodbye!")
     return str(resp)
     # return render_template('index.html', result=str(resp))
 
@@ -23,24 +23,7 @@ def phoneBuzz():
     if request.method == 'GET':
         nm = request.args.get('Digits')
         res = generatePhoneBuzz(int(nm))
-        # message = client.messages.create(body=', '.join(res),
-        #     to="+18582636040",    # Replace with your phone number
-        #     from_="+12565308617") # Replace with your Twilio number
         return "<Response><Say>" + ", ".join(res) + "</Say></Response>"
-    #     return render_template('index.html', result = res)
-    # return render_template('index.html')
-
-# @app.route('/success', methods=['GET'])
-# def success():
-#   error = None
-#   if request.method == 'GET':
-#       nm = request.args.get('number')
-#       res = generatePhoneBuzz(int(nm));
-#       message = client.messages.create(body=', '.join(res),
-#           to="+18582636040",    # Replace with your phone number
-#           from_="+12565308617") # Replace with your Twilio number
-#   return redirect(url_for('/',result=res))
-
 
 def generatePhoneBuzz(nm):
     res = []
