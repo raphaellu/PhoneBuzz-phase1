@@ -29,19 +29,20 @@ def phoneBuzz():
 def handle_input():
     nm = request.values.get('Digits', '')
     # prepare the post request params for validation
-    post_params = {
-        'CallSid': request.values.get('CallSid', ''),
-        'Caller': request.values.get('Caller', ''),
-        'Digits': nm,
-        'From': request.values.get('From', ''),
-        'To': request.values.get('To', '')
-    }
+    # post_params = {
+    #     'CallSid': request.values.get('CallSid', ''),
+    #     'Caller': request.values.get('Caller', ''),
+    #     'Digits': nm,
+    #     'From': request.values.get('From', ''),
+    #     'To': request.values.get('To', '')
+    # }
     resp = twilio.twiml.Response()
+
     # validate that the request is from Twilio
-    if not validator.validate(mysite+"handle_input", post_params, twilio_signature):
-        print (post_params)
-        resp.say("You are not an authorized user. Sorry. CallSid is " + post_params['CallSid'] + " Caller is " + post_params['Caller'] + " From is " + post_params['From'] + " To is : " +post_params['To'])
-        return str(resp)
+    # if not validator.validate(mysite+"handle_input", post_params, twilio_signature):
+    #     print (post_params)
+    #     resp.say("You are not an authorized user. Sorry.")
+    #     return str(resp)
 
     
     if nm.isdigit():  # if input is valid
