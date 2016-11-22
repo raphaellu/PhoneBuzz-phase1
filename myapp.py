@@ -12,8 +12,8 @@ app = Flask(__name__)
 def index():
     resp = twilio.twiml.Response()
     with resp.gather(action="/phonebuzz", method="GET", timeout=10) as g:
-        g.say("Please enter a number to start fizz buzz game, followed by the pound sign")
-    return str(resp)
+        g.say("Please enter a number to start fizz buzz game, followed by the pound sign.")
+    return "Please dial +1(256)530-8617 to start the game.\n"+str(resp)
     # return render_template('index.html', result=str(resp))
 
 @app.route('/phonebuzz')
