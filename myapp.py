@@ -10,10 +10,10 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    # resp = twilio.twiml.Response()
-    # resp.say("Hello Monkey")
-    # return str(resp)
-    return render_template('index.html')
+    resp = twilio.twiml.Response()
+    resp.say("Hello Monkey")
+    return str(resp)
+    # return render_template('index.html')
 
 @app.route('/success')
 def phoneBuzz():
