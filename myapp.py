@@ -13,7 +13,6 @@ def index():
     resp = twilio.twiml.Response()
     with resp.gather(action="/phonebuzz", method="GET", timeout=10) as g:
         g.say("Please enter a number to start fizz buzz game, followed by the pound sign")
-    resp.say("Game finished. Goodbye!")
     return str(resp)
     # return render_template('index.html', result=str(resp))
 
@@ -23,7 +22,7 @@ def phoneBuzz():
     if request.method == 'GET':
         nm = request.args.get('Digits')
         res = generatePhoneBuzz(int(nm))
-        return "<Response><Say>" + ", ".join(res) + "</Say></Response>"
+        return "<Response><Say>" + ", ".join(res) + "</Say><Say>resp.say('Game finished. Goodbye!')</Say></Response>"
 
 def generatePhoneBuzz(nm):
     res = []
