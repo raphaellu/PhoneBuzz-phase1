@@ -22,7 +22,7 @@ def phoneBuzz():
     if request.method == 'GET':
         nm = request.args.get('Digits')
         res = generatePhoneBuzz(int(nm))
-        return "<Response><Say>" + ", ".join(res) + "</Say><Say>resp.say('Game finished. Goodbye!')</Say></Response>"
+        return "<Response><Say>" + ", ".join(res) + "</Say><Say>,,,,Game finished. Goodbye!</Say></Response>"
 
 def generatePhoneBuzz(nm):
     res = []
