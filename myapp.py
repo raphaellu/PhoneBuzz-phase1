@@ -15,18 +15,23 @@ def index():
 @app.route('/phonebuzz')
 def phoneBuzz():
     resp = twilio.twiml.Response()
-    with resp.gather(action="/success", method="GET", timeout=10) as g:
+    # ask user to enter a num for game
+    with resp.gather(action="/handle_input", method="POST", timeout=10) as g:
         g.say("Please enter a number to start fizz buzz game, followed by the pound sign.")
     return str(resp)
 
-@app.route('/success')    
-def success():
-    error = None
-    if request.method == 'GET':
-        nm = request.args.get('Digits')
+@app.route('/handle_input')    
+def handle_input():
+    nm = request.values.get('Digits', None)
+    resp = twilio.twiml.Response()
+    if nm.isdigit():  # if input is valid
         res = generatePhoneBuzz(int(nm))
-        return "<Response><Say>" + ", ".join(res) + "</Say><Say>,,,,Game finished. Goodbye!</Say></Response>"
+        res.say(", ".join(res) + "</Say><Say>,,,,Game finished. Goodbye!</Say></Response>")
+    else: # if input is invalid, ask for re-entering the num
+        res.say("You did not enter a valid number.")
+        return redirect("/phonebuzz")
 
+    
 def generatePhoneBuzz(nm):
     res = []
     for i in range(1, nm+1):
